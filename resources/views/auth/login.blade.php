@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="container">
+
+    <img src="{{ asset('icono.png') }}" alt="icono" class="mx-auto d-block" style="width: 13rem;">
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -12,7 +15,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -45,7 +48,7 @@
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="remember">
-                                        Recuerdamae
+                                        {{ __('Remember Me')}}
                                     </label>
                                 </div>
                             </div>

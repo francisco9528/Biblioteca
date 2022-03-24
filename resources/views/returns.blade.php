@@ -7,6 +7,10 @@
 
         <div class="col-md-12">
 
+            <div id="display_alert_return">
+
+            </div>
+
             <div class="card">
                 <div class="card-header">Devoluciones</div>
 
@@ -32,10 +36,6 @@
                     </div>
 
                 </div>
-            </div>
-
-            <div id="display_alert_return">
-
             </div>
 
         </div>
@@ -121,15 +121,25 @@
 
                         bookAssignments();
 
+                        window.scrollTo(0, 0);
+
+                        $('#display_alert_return').html(`
+                            <div class="alert alert-success">
+                                <i class="far fa-check-circle"></i> <a href="#" class="alert-link"> La devolución fue realizada con exito.</a>
+                            </div>
+                        `);
+
+                        setTimeout(() => $('#display_alert_return').empty(), 4000);
+
                     } else {
 
                         $('#display_alert_return').html(`
                             <div class="alert alert-danger">
-                                <strong>Advertencia! </strong><a href="#" class="alert-link">Ocurrio un error al devolver el libro</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Ocurrio un error al devolver el libro.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_return').empty(), 10000);
+                        setTimeout(() => $('#display_alert_return').empty(), 4000);
 
                     }
 
@@ -144,11 +154,11 @@
 
                     $('#display_alert_return').html(`
                             <div class="alert alert-danger">
-                                <strong>Advertencia! </strong><a href="#" class="alert-link">Ocurrio un error</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Ocurrio un error.</a>
                             </div>
                     `);
 
-                    setTimeout(() => $('#display_alert_return').empty(), 10000);
+                    setTimeout(() => $('#display_alert_return').empty(), 4000);
 
                 }
             });

@@ -4,14 +4,13 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title">Acceso usuario</h4>
+                <h4 class="modal-title">Acceso usuarios</h4>
                 <button type="button" class="close close_user_add">&times;</button>
             </div>
 
             <form id="form_user_add">
 
                 <div class="modal-body">
-
 
                     <div id="display_alert_add">
 
@@ -29,7 +28,7 @@
                     <div class="row">
 
                         <div class="col-12 form-group">
-                            <label for="email">Email</label>
+                            <label for="email">Correo electrónico</label>
                             <input type="email" id="email" name="email" class="form-control form-control-sm" maxlength="50" required>
                         </div>
 
@@ -39,11 +38,10 @@
 
                         <div class="col-12 form-group">
 
-                            <label for="password">Password</label>
+                            <label for="password">Contraseña</label>
                             <input type="password" id="password" name="password" class="form-control form-control-sm" maxlength="16" required>
 
-                            <p class="small mb-0">Intervalo de contraseña valido [8-16].</p>
-                            <p class="small mb-0">La contraseña debe contener como minimo un numero, una letra mayuscula, una letra minuscula y un simbolo.</p>
+                            <p class="small mb-0">Rango valido de contraseña [8-16].</p>
 
                         </div>
 

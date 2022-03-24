@@ -1,40 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="container">
 
-    <div class="row">
+    <div class="row justify-content-center">
 
         <div class="col-md-12">
 
+            <div id="display_alert">
+
+            </div>
+
             <div class="card">
-                <div class="card-header">Agregar usuarios</div>
+
+                <div class="card-header">Acceso usuarios</div>
 
                 <div class="card-body">
 
-                    <div>
-                        <button type="button" id="add_user" class="btn btn-info mb-4">
-                            Agregar
-                        </button>
+                    <button type="button" id="add" class="btn btn-info mb-4">
+                        Agregar
+                    </button>
 
-                        <table class="table table-bordered table-hover table-sm">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Email</th>
-                                    <th>Perfil</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="row_user">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo electrónico</th>
+                                <th>Perfil</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="row_user">
 
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
 
                 </div>
+
             </div>
 
         </div>
@@ -54,13 +57,13 @@
 <script>
     'use strict'; // JS en modo estricto
 
-    // Función para traer el listado de usuarios
+    // Función para traer y pintar el listado de usuarios
     function users() {
 
         $.ajax({
             url: '/users', // Url a la que se hara el request
             method: 'GET', // Metodo HTTP
-            data: {},
+            data: {}, // Datos enviados en el request
             dataType: "json", // Formato de respuesta esperada
             success: function(result) {
 
@@ -78,7 +81,7 @@
                                         <td>${objeto.email}</td>
                                         <td>${objeto.profile}</td>
                                         <td>${objeto.status}</td>
-                                        <td><button type="button" class="btn btn-secondary btn-sm update_user" data-id-user="${objeto.id}" data-name="${objeto.name}" data-email="${objeto.email}" data-id-profile="${objeto.id_profile}" data-id-status="${objeto.id_status}">Actualizar</button></td>
+                                        <td><button type="button" class="btn btn-secondary btn-sm update_user" data-id-user="${objeto.id}" data-name="${objeto.name}" data-email="${objeto.email}" data-id-profile="${objeto.id_profile}" data-id-status="${objeto.id_status}">{{__("Update")}}</button></td>
                                         </tr>
                     `);
 
@@ -95,7 +98,7 @@
         users();
 
         // Logica para abrir el modal para agregar un usuario
-        $('#add_user').on('click', function() {
+        $('#add').on('click', function() {
 
             // Abrir modal con un fondo estatico
             $('#modal_user_add').modal({
@@ -126,7 +129,7 @@
 
         });
 
-        // Logica para cerra el modal
+        // Logica para cerrar el modal para agregar un usuario
         $("#modal_user_add").on('click', '.close_user_add', function() {
 
             // Desencadenamos el evento reset en el formulario
@@ -137,7 +140,7 @@
 
         });
 
-        // Logica para cerra el modal
+        // Logica para cerra el modal para agregar un usuario
         $("#modal_user_update").on('click', '.close_user_update', function() {
 
             // Desencadenamos el evento reset en el formulario
@@ -186,25 +189,35 @@
 
                         users();
 
+                        window.scrollTo(0, 0);
+
+                        $('#display_alert').html(`
+                            <div class="alert alert-success">
+                                <i class="far fa-check-circle"></i> <a href="#" class="alert-link"> El usuario fue agregado con exito.</a>
+                            </div>
+                        `);
+
+                        setTimeout(() => $('#display_alert').empty(), 4000);
+
                     } else if (result.response == 'error email') {
 
                         $('#display_alert_add').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia! </strong> <a href="#" class="alert-link">Correo electrónico ingresado ya esta registrado</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link"> Correo electrónico ingresado ya esta registrado.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_add').empty(), 10000);
+                        setTimeout(() => $('#display_alert_add').empty(), 4000);
 
                     } else {
 
                         $('#display_alert_add').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia! </strong> <a href="#" class="alert-link">Ocurrio un error al agregar un usuario</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link"> Ocurrio un error al agregar un usuario.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_add').empty(), 10000);
+                        setTimeout(() => $('#display_alert_add').empty(), 4000);
 
                     }
 
@@ -212,18 +225,36 @@
                     $('#add_user').prop('disabled', false);
 
                 },
-                error: function(jqXHR) {
+                error: function(jqXHR, status) {
+
+                    // objeto jqXHR (extensión de XMLHttpRequest)
+                    // console.log(jqXHR);
+                    // console.log(jqXHR.responseJSON);
+                    // console.log(jqXHR.responseJSON.errors);
+
+                    let objeto_errors = jqXHR.responseJSON.errors;
+
+                    let msg_error = null;
+
+                    for (const property in objeto_errors) {
+
+                        // console.log(`${property}: ${objeto_errors[property]}`);
+
+                        msg_error = objeto_errors[property]; // obtenemos siempre el primer mensaje de la validación
+
+                        break; // termina el ciclo
+                    }
 
                     // Desbloqueamos el button
                     $('#add_user').prop('disabled', false);
 
                     $('#display_alert_add').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia! </strong> <a href="#" class="alert-link">Los parametros ingresados son incorrectos</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">${msg_error}</a>
                             </div>
-                        `);
+                    `);
 
-                    setTimeout(() => $('#display_alert_add').empty(), 10000);
+                    setTimeout(() => $('#display_alert_add').empty(), 4000);
 
                 }
             });
@@ -275,25 +306,35 @@
 
                         users();
 
+                        window.scrollTo(0, 0);
+
+                        $('#display_alert').html(`
+                            <div class="alert alert-success">
+                                <i class="far fa-check-circle"></i> <a href="#" class="alert-link"> El usuario fue actualizado con exito.</a>
+                            </div>
+                        `);
+
+                        setTimeout(() => $('#display_alert').empty(), 4000);
+
                     } else if (result.response == 'error email') {
 
                         $('#display_alert_update').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong> <a href="#" class="alert-link">Correo electrónico ingresado ya esta registrado</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link"> Correo electrónico ingresado ya esta registrado.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_update').empty(), 10000);
+                        setTimeout(() => $('#display_alert_update').empty(), 4000);
 
                     } else {
 
                         $('#display_alert_update').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong> <a href="#" class="alert-link">Ocurrio un error al actualizar el usuario</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link"> Ocurrio un error al actualizar el usuario.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_update').empty(), 10000);
+                        setTimeout(() => $('#display_alert_update').empty(), 4000);
 
                     }
 
@@ -301,18 +342,36 @@
                     $('#update_user').prop('disabled', false);
 
                 },
-                error: function() {
+                error: function(jqXHR, status) {
+
+                    // objeto jqXHR (extensión de XMLHttpRequest)
+                    // console.log(jqXHR); 
+                    // console.log(jqXHR.responseJSON);
+                    console.log(jqXHR.responseJSON.errors);
+
+                    let objeto_errors = jqXHR.responseJSON.errors;
+
+                    let msg_error = null;
+
+                    for (const property in objeto_errors) {
+
+                        console.log(`${property}: ${objeto_errors[property]}`);
+
+                        msg_error = objeto_errors[property]; // obtenemos siempre el primer mensaje de la validación
+
+                        break; // termina el ciclo
+                    }
 
                     // Desbloqueamos el button
                     $('#update_user').prop('disabled', false);
 
                     $('#display_alert_update').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong> <a href="#" class="alert-link">Los parametros ingresados son incorrectos</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">${msg_error}</a>
                             </div>
-                        `);
+                    `);
 
-                    setTimeout(() => $('#display_alert_update').empty(), 10000);
+                    setTimeout(() => $('#display_alert_update').empty(), 4000);
 
                 }
             });

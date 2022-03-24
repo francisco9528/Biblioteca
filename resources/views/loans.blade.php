@@ -7,8 +7,12 @@
 
         <div class="col-md-12">
 
+            <div id="display_alert_loan">
+
+            </div>
+
             <div class="card">
-                <div class="card-header">Prestamos</div>
+                <div class="card-header">Prestamo</div>
 
                 <div class="card-body">
 
@@ -36,10 +40,6 @@
                     </form>
 
                 </div>
-            </div>
-
-            <div id="display_alert_loan">
-
             </div>
 
         </div>
@@ -125,25 +125,35 @@
 
                         books();
 
+                        window.scrollTo(0, 0);
+
+                        $('#display_alert_loan').html(`
+                            <div class="alert alert-success">
+                                <i class="far fa-check-circle"></i> <a href="#" class="alert-link"> La asignación fue realizada con exito.</a>
+                            </div>
+                        `);
+
+                        setTimeout(() => $('#display_alert_loan').empty(), 4000);
+
                     } else if (result.response = 'libros insuficientes') {
 
                         $('#display_alert_loan').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong> <a href="#" class="alert-link">Libros insuficientes</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Libros insuficientes.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_loan').empty(), 10000);
+                        setTimeout(() => $('#display_alert_loan').empty(), 4000);
 
                     } else {
 
                         $('#display_alert_loan').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia! </strong><a href="#" class="alert-link">Ocurrio un error al solicitar el prestamo</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Ocurrio un error al solicitar el prestamo.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_loan').empty(), 10000);
+                        setTimeout(() => $('#display_alert_loan').empty(), 4000);
 
                     }
 
@@ -151,18 +161,36 @@
                     $('#loans').prop('disabled', false);
 
                 },
-                error: function() {
+                error: function(jqXHR, status) {
+
+                    // objeto jqXHR (extensión de XMLHttpRequest)
+                    // console.log(jqXHR); 
+                    // console.log(jqXHR.responseJSON);
+                    console.log(jqXHR.responseJSON.errors);
+
+                    let objeto_errors = jqXHR.responseJSON.errors;
+
+                    let msg_error = null;
+
+                    for (const property in objeto_errors) {
+
+                        console.log(`${property}: ${objeto_errors[property]}`);
+
+                        msg_error = objeto_errors[property]; // obtenemos siempre el primer mensaje de la validación
+
+                        break; // termina el ciclo
+                    }
 
                     // Desbloqueamos el button
                     $('#loans').prop('disabled', false);
 
                     $('#display_alert_loan').html(`
-                            <div class="alert alert-danger">
-                                 <strong>Advertencia! </strong><a href="#" class="alert-link">Ocurrio un error</a>
-                            </div>
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">${msg_error}</a>
+                        </div>
                     `);
 
-                    setTimeout(() => $('#display_alert_loan').empty(), 10000);
+                    setTimeout(() => $('#display_alert_loan').empty(), 4000);
 
                 }
             });

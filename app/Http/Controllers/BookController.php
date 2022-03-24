@@ -58,10 +58,10 @@ class BookController extends Controller
 
         // El metodo validate() retorna un array con los campos que fueron validados
         $validated_data = $request->validate([
-            'title' => 'required|max:100',
-            'autor' => 'required|max:100',
-            'editorial' => 'required|max:100',
-            'edition' => 'required|max:100',
+            'title' => 'required|max:50',
+            'autor' => 'required|max:50',
+            'editorial' => 'required|max:50',
+            'edition' => 'required|max:50',
             'cantidad' => 'required'
         ]);
 
@@ -105,10 +105,10 @@ class BookController extends Controller
 
         // El metodo validate() retorna un array con los campos que fueron validados
         $validated_data = $request->validate([
-            'title_u' => 'required|max:100',
-            'autor_u' => 'required|max:100',
-            'editorial_u' => 'required|max:100',
-            'edition_u' => 'required|max:100',
+            'title_u' => 'required|max:50',
+            'autor_u' => 'required|max:50',
+            'editorial_u' => 'required|max:50',
+            'edition_u' => 'required|max:50',
         ]);
 
         $title = $validated_data['title_u'];

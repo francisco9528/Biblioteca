@@ -7,38 +7,37 @@
 
         <div class="col-md-12">
 
+            <div id="display_alert">
+
+            </div>
+
             <div class="card">
-                <div class="card-header">Libros</div>
+                <div class="card-header">inventario libros</div>
 
                 <div class="card-body">
 
-                    <div>
-                        <button type="button" id="add_book" class="btn btn-info mb-4">
-                            Agregar
-                        </button>
+                    <button type="button" id="add_book" class="btn btn-info mb-4">
+                        Agregar
+                    </button>
 
-                        <table class="table table-bordered table-hover table-sm">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>titulo</th>
-                                    <th>Autor</th>
-                                    <th>Editorial</th>
-                                    <th>Edición</th>
-                                    <th>Cantidad</th>
-                                    <th>Prestamos</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="row_book">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Titulo</th>
+                                <th>Autor</th>
+                                <th>Editorial</th>
+                                <th>Edición</th>
+                                <th>Cantidad</th>
+                                <th>Prestamos</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="row_book">
 
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
 
                 </div>
-            </div>
-
-            <div id="display_alert_delete">
 
             </div>
 
@@ -60,7 +59,7 @@
 <script>
     'use strict'; // JS en modo estricto
 
-    // Función para traer el listado de libros
+    // Función para traer el inventario de libros
     function books() {
 
         $.ajax({
@@ -102,10 +101,10 @@
 
     $(document).ready(function() {
 
-        // Pintamos el listado de libros
+        // Pintamos el inventario de libros
         books();
 
-        // Logica para abrir el modal para agregar un libro
+        // Logica para abrir el modal para agregar un libro al inventario
         $('#add_book').on('click', function() {
 
             // Abrir modal con un fondo estatico
@@ -141,7 +140,7 @@
 
         });
 
-        // Logica para cerra el modal
+        // Logica para cerrar el modal para agregar un libro al inventario
         $("#modal_book_add").on('click', '.close_book_add', function() {
 
             // Desencadenamos el evento reset en el formulario
@@ -152,7 +151,7 @@
 
         });
 
-        // Logica para cerra el modal
+        // Logica para cerrar el modal para actualizar un libro
         $("#modal_book_update").on('click', '.close_book_update', function() {
 
             // Desencadenamos el evento reset en el formulario
@@ -163,7 +162,7 @@
 
         });
 
-        // Funcionalidad para agregar un libro
+        // Funcionalidad para agregar un libro al inventario
         $("#form_book_add").on('submit', function(event) {
 
             event.preventDefault(); // Si se llama a este método, la acción predeterminada del evento no se activará.
@@ -201,15 +200,25 @@
 
                         books();
 
+                        window.scrollTo(0, 0);
+
+                        $('#display_alert').html(`
+                            <div class="alert alert-success">
+                                <i class="far fa-check-circle"></i> <a href="#" class="alert-link"> El libro fue agregado con exito.</a>
+                            </div>
+                        `);
+
+                        setTimeout(() => $('#display_alert').empty(), 4000);
+
                     } else {
 
                         $('#display_alert_add').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong> You should <a href="#" class="alert-link">Ocurrio un error al agregar el libro</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Ocurrio un error al agregar el libro.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_add').empty(), 10000);
+                        setTimeout(() => $('#display_alert_add').empty(), 4000);
 
                     }
 
@@ -217,18 +226,36 @@
                     $('#add_book').prop('disabled', false);
 
                 },
-                error: function(jqXHR) {
+                error: function(jqXHR, status) {
+
+                    // objeto jqXHR (extensión de XMLHttpRequest)
+                    // console.log(jqXHR);
+                    // console.log(jqXHR.responseJSON);
+                    // console.log(jqXHR.responseJSON.errors);
+
+                    let objeto_errors = jqXHR.responseJSON.errors;
+
+                    let msg_error = null;
+
+                    for (const property in objeto_errors) {
+
+                        // console.log(`${property}: ${objeto_errors[property]}`);
+
+                        msg_error = objeto_errors[property]; // obtenemos siempre el primer mensaje de la validación
+
+                        break; // termina el ciclo
+                    }
 
                     // Desbloqueamos el button
                     $('#add_book').prop('disabled', false);
 
                     $('#display_alert_add').html(`
-                            <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong> You should <a href="#" class="alert-link">Los parametros ingresados son incorrectos</a>
-                            </div>
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">${msg_error}</a>
+                        </div>
                     `);
 
-                    setTimeout(() => $('#display_alert_add').empty(), 10000);
+                    setTimeout(() => $('#display_alert_add').empty(), 4000);
 
                 }
             });
@@ -280,15 +307,25 @@
 
                         books();
 
+                        window.scrollTo(0, 0);
+
+                        $('#display_alert').html(`
+                            <div class="alert alert-success">
+                                <i class="far fa-check-circle"></i> <a href="#" class="alert-link"> El libro fue actualizado con exito.</a>
+                            </div>
+                        `);
+
+                        setTimeout(() => $('#display_alert').empty(), 4000);
+
                     } else {
 
                         $('#display_alert_update').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong><a href="#" class="alert-link">Ocurrio un error al agregar el libro</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Ocurrio un error al actualizar el libro.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_update').empty(), 10000);
+                        setTimeout(() => $('#display_alert_update').empty(), 4000);
 
                     }
 
@@ -296,18 +333,36 @@
                     $('#update_book').prop('disabled', false);
 
                 },
-                error: function(jqXHR) {
+                error: function(jqXHR, status) {
+
+                    // objeto jqXHR (extensión de XMLHttpRequest)
+                    // console.log(jqXHR); 
+                    // console.log(jqXHR.responseJSON);
+                    console.log(jqXHR.responseJSON.errors);
+
+                    let objeto_errors = jqXHR.responseJSON.errors;
+
+                    let msg_error = null;
+
+                    for (const property in objeto_errors) {
+
+                        console.log(`${property}: ${objeto_errors[property]}`);
+
+                        msg_error = objeto_errors[property]; // obtenemos siempre el primer mensaje de la validación
+
+                        break; // termina el ciclo
+                    }
 
                     // Desbloqueamos el button
                     $('#update_book').prop('disabled', false);
 
                     $('#display_alert_update').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong><a href="#" class="alert-link">Los parametros ingresados son incorrectos</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">${msg_error}</a>
                             </div>
                     `);
 
-                    setTimeout(() => $('#display_alert_update').empty(), 10000);
+                    setTimeout(() => $('#display_alert_update').empty(), 4000);
 
                 }
             });
@@ -343,25 +398,35 @@
 
                         books();
 
-                    } else if (result.response == 'prestamos activos') {
+                        window.scrollTo(0, 0);
 
-                        $('#display_alert_delete').html(`
-                            <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong><a href="#" class="alert-link">Existen prestamos activos</a>
+                        $('#display_alert').html(`
+                            <div class="alert alert-success">
+                                <i class="far fa-check-circle"></i> <a href="#" class="alert-link"> El libro fue eliminado con exito.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_delete').empty(), 10000);
+                        setTimeout(() => $('#display_alert').empty(), 4000);
+
+                    } else if (result.response == 'prestamos activos') {
+
+                        $('#display_alert').html(`
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Existen prestamos activos.</a>
+                            </div>
+                        `);
+
+                        setTimeout(() => $('#display_alert').empty(), 4000);
 
                     } else {
 
-                        $('#display_alert_delete').html(`
+                        $('#display_alert').html(`
                             <div class="alert alert-danger">
-                                 <strong>Advertencia!</strong><a href="#" class="alert-link">Ocurrio un error al eliminar el libro</a>
+                                <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Ocurrio un error al eliminar el libro.</a>
                             </div>
                         `);
 
-                        setTimeout(() => $('#display_alert_delete').empty(), 10000);
+                        setTimeout(() => $('#display_alert').empty(), 4000);
 
                     }
 
@@ -374,15 +439,16 @@
                     // Desbloqueamos el button
                     $('.delete_book').prop('disabled', false);
 
-                    $('#display_alert_delete').html(`
+                    $('#display_alert').html(`
                         <div class="alert alert-danger">
-                            <strong>Advertencia!</strong><a href="#" class="alert-link">Ocurrio un error</a>
+                            <i class="fas fa-exclamation-circle"></i> <a href="#" class="alert-link">Ocurrio un error.</a>
                         </div>
                     `);
 
-                    setTimeout(() => $('#display_alert_delete').empty(), 10000);
+                    setTimeout(() => $('#display_alert').empty(), 4000);
 
                 }
+
             });
 
         });

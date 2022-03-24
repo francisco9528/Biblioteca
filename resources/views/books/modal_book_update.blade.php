@@ -14,7 +14,7 @@
 
                 <div class="modal-body">
 
-                    <div id="display_alert_updte">
+                    <div id="display_alert_update">
 
                     </div>
 

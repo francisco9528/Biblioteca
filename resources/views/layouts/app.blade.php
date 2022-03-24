@@ -13,10 +13,13 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <link rel="icon" type="image/png" href="{{ asset('icono.png') }}" />
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- recurso temporal Temporal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Styles -->
@@ -28,7 +31,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Biblioteca
+                    {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -42,6 +45,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
@@ -57,14 +61,14 @@
                             <a class="nav-link" href="{{ route('returns') }}">Devoluciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('loans') }}">Prestamos</a>
+                            <a class="nav-link" href="{{ route('loans') }}">Prestamo</a>
                         </li>
                         @if (auth()->user()->id_profile == 1)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('assignments') }}">Asignaciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('books') }}">Libros</a>
+                            <a class="nav-link" href="{{ route('books') }}">inventario libros</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('users') }}">Acceso usuarios</a>
@@ -78,7 +82,7 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    Salir
+                                    {{__('Logout')}}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

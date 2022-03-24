@@ -13,7 +13,7 @@ class UserController extends Controller
     /**
      * 
      * El metodo _construct() se ejecuta cuando se instancia la clase  
-     * UserController debe estar autenticado para acceder a los metodos 
+     * UserController, debe estar autenticado para acceder a los metodos 
      *
      */
     public function __construct()
@@ -60,12 +60,14 @@ class UserController extends Controller
     {
 
         // El metodo validate() retorna un array con los campos que fueron validados
-        $validated_data = $request->validate([
-            'name' => 'required|max:50',
-            'email' => 'required|email|max:40',
-            'password' => 'required|min:8|max:16',
-            'profile' => 'required'
-        ]);
+        $validated_data = $request->validate(
+            [
+                'name' => 'required|max:50',
+                'email' => 'required|email|max:50',
+                'password' => 'required|min:8|max:16',
+                'profile' => 'required'
+            ]
+        );
 
         $name = $validated_data['name'];
         $email = $validated_data['email'];
@@ -114,22 +116,26 @@ class UserController extends Controller
         if (empty($password)) {
 
             // Validamos los datos enviados en el request
-            $validated_data = $request->validate([
-                'name_u' => 'required|max:50',
-                'email_u' => 'required|email|max:40',
-                'profile_u' => 'required',
-                'stat_u' => 'required'
-            ]);
+            $validated_data = $request->validate(
+                [
+                    'name_u' => 'required|max:50',
+                    'email_u' => 'required|email|max:50',
+                    'profile_u' => 'required',
+                    'stat_u' => 'required'
+                ]
+            );
         } else {
 
             // Validamos los datos enviados en el request
-            $validated_data = $request->validate([
-                'name_u' => 'required|max:50',
-                'email_u' => 'required|email|max:40',
-                'password_u' => 'required|min:8|max:16',
-                'profile_u' => 'required',
-                'stat_u' => 'required'
-            ]);
+            $validated_data = $request->validate(
+                [
+                    'name_u' => 'required|max:50',
+                    'email_u' => 'required|email|max:50',
+                    'password_u' => 'required|min:8|max:16',
+                    'profile_u' => 'required',
+                    'stat_u' => 'required'
+                ]
+            );
 
             $edited_password = $validated_data['password_u'];
         }
