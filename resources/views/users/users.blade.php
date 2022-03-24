@@ -81,7 +81,7 @@
                                         <td>${objeto.email}</td>
                                         <td>${objeto.profile}</td>
                                         <td>${objeto.status}</td>
-                                        <td><button type="button" class="btn btn-secondary btn-sm update_user" data-id-user="${objeto.id}" data-name="${objeto.name}" data-email="${objeto.email}" data-id-profile="${objeto.id_profile}" data-id-status="${objeto.id_status}">{{__("Update")}}</button></td>
+                                        <td><button type="button" class="btn btn-secondary btn-sm update_user" data-id-user="${objeto.id}" data-name="${objeto.name}" data-email="${objeto.email}" data-id-profile="${objeto.id_profile}" data-id-status="${objeto.id_status}">Actualizar</button></td>
                                         </tr>
                     `);
 
