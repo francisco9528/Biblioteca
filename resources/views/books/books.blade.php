@@ -12,7 +12,7 @@
             </div>
 
             <div class="card">
-                <div class="card-header">inventario libros</div>
+                <div class="card-header">Inventario libros</div>
 
                 <div class="card-body">
 

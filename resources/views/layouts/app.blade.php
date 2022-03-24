@@ -68,7 +68,7 @@
                             <a class="nav-link" href="{{ route('assignments') }}">Asignaciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('books') }}">inventario libros</a>
+                            <a class="nav-link" href="{{ route('books') }}">Inventario libros</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('users') }}">Acceso usuarios</a>
