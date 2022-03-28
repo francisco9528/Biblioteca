@@ -22,6 +22,7 @@ Ejecutar las migraciones y posteriormente los seeders, ya que estos cuentas con 
 La aplicación viene cargado con un usuario de prueba, con las siguientes credenciales:
 
 Correo electrónico: correo_prueba_@hotmail.com
+
 Contraseña: password
 
 ## Interfaces
