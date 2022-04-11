@@ -16,8 +16,8 @@ class CreateTypeAssignmentsTable extends Migration
 
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_user');
-            $table->integer('id_book');
+            $table->bigInteger('id_user')->unsigned();;
+            $table->bigInteger('id_book')->unsigned();;
             $table->dateTime('date_output');
             $table->dateTime('date_input')->nullable();
             $table->integer('flag');
